@@ -55,12 +55,13 @@ object Home2 {
     val metrics = getMetrics(model, cvData)
 
 //    val jim1 = data.take(20)
-//    jim1.foreach(println)
+
+    println(metrics.confusionMatrix)
+    println("metrics.precision")
+    
 
 
-    println(" ")
-    println("program finished running, yay!")
-
-
+    println("\n \n")
+    print("program finished running, yay!")
   } // def main
 }
