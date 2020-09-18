@@ -11,6 +11,16 @@ import org.apache.spark.{SparkConf, SparkContext}
 
 object Home2 {
 
+  def getMetrics(model: DecisionTreeModel, data: RDD[LabeledPoint]): MulticlassMetrics = {
+    val predictionsAndLabels = data.map(example =>
+      (model.predict(example.features), example.label)
+    )
+    new MulticlassMetrics(predictionsAndLabels)
+
+  } // def getMetrics()
+
+
+  // main() function
   def main( args: Array[String] ) {
 
     // set the log level
@@ -32,30 +42,28 @@ object Home2 {
 
     // Split into 80% train, 10% cross validation, 10% test
     val Array(trainData, cvData, testData) = data.randomSplit(Array(0.8, 0.1, 0.1))
+
+    // "cache data to RAM"
     trainData.cache()
     cvData.cache()
     testData.cache()
 
 
-
     // Build a simple default DecisionTreeModel and compute precision and recall
+    //    simpleDecisionTree(trainData, cvData)
     val model = DecisionTree.trainClassifier(trainData, 7, Map[Int,Int](), "gini", 4, 100)
-
     val metrics = getMetrics(model, cvData)
 
+    println("\n Printing the PRECISION VALUE for each 'Class' \n")
+    for ( asdf <-  0 to 6) {  // we have total of 7 'classes'
+      println("Class " + asdf + " with precision value: " + metrics.precision(asdf) )
+    }
+
+    println("\n Printing the CONFUSION MATRIX \n")
     println(metrics.confusionMatrix)
-//    println(metrics.precision) // <<< TODO: why is this line wrong?
 
-    (0 until 7).map(
-      category => (metrics.precision(category), metrics.recall(category))
-    ).foreach(println)
 
-//    simpleDecisionTree(trainData, cvData) // <<< TODO
-//    randomClassifier(trainData, cvData)
-//    evaluate(trainData, cvData, testData)
-//    evaluateCategorical(rawData)
-//    evaluateForest(rawData)
-
+    // remove data from RAM?
     trainData.unpersist()
     cvData.unpersist()
     testData.unpersist()
@@ -64,14 +72,6 @@ object Home2 {
     println("Main function() finished running, yay!")
 
   } // def main()
-
-  def getMetrics(model: DecisionTreeModel, data: RDD[LabeledPoint]): MulticlassMetrics = {
-    val predictionsAndLabels = data.map(example =>
-      (model.predict(example.features), example.label)
-    )
-    new MulticlassMetrics(predictionsAndLabels)
-
-  } // def getMetrics()
 
 
 } // Object Home2
