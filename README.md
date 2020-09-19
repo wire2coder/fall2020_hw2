@@ -202,7 +202,42 @@ object Home2 {
 ## Outputs and Screenshots :thumbsup:
 
 What type of forest is on this piece of land? <br />
-Output also includes the "CONFUSION MATRIX"
+Output also includes the "CONFUSION MATRIX" <br>
+
+The 'precision value' ranges from 0 to 1
+- 0 means no precision at all
+- 1 means 100% precision
+
+You want the 'precision value' to be as close to 1 as possible <br>
+For this 'data set' we want to know how accurate the 'decision tree' algorithm will predict the answer <br>
+
+Remember, the 'answers' for the this 'data set' is the TYPE OF FOREST
+
+```
+Forest Cover Type Classes:	    1 -- Spruce/Fir
+                                2 -- Lodgepole Pine
+                                3 -- Ponderosa Pine
+                                4 -- Cottonwood/Willow
+                                5 -- Aspen
+                                6 -- Douglas-fir
+                                7 -- Krummholz
+```
+
+Each 'TYPE OF FOREST' is also can be referred to as the 'CLASS' <br />
+Yes, let keep things confusing and convoluted by adding words.
+
+So, looking at the output of the program, we should get SEVEN numbers range from 0 to 1 <br />
+BUT, our 'TYPE OF FOREST' ranges from 1 to 7 <br />
+
+- so 'class 0' will refers to 'FOREST TYPE 1'
+- 'class 1' will refers to 'FOREST TYPE 2'
+- etc
+
+#### Interpretation of the answer
+So we can see below that when you feed the 'sample' to the  'decision tree' algorithm; it correctly 'predicted' the 'FOREST TYPE 1' by 68%, 0.684 * 100, Class 0 <br />
+We have no data that are 'FOREST TYPE 6', Class 5 <br />
+The algorithm poorly predicted the 'FOREST TYPE 4' Class 3, from the data (samples) with only 0.36, 36% accuracy
+ 
 
 ```
 Printing the PRECISION VALUE for each 'Class' 
