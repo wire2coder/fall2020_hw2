@@ -18,7 +18,7 @@ Each 'sample' of the data set looks like this: <br /> <br />
 
 this is one line in the 'covtype.dat' file, each line is a 'sample' <br />
 a 'sample' has 55 columns: 0 to 54 <br />
-581012 rows (samples): 0 to 581011 <br /> <br />
+This 'data set' has total of 581012 rows (samples): 0 to 581011 <br /> <br />
 
 column 0 to 9 has the following 'attribute'
 ```
@@ -36,8 +36,8 @@ column 0 to 9 has the following 'attribute'
  9   Horizontal_Distance_To_Fire_Points  581012 non-null  int64
 ```
 
-column 10 to 11, each of the column represent a binary number 0/1, so all 4 columns together represents 4 bits binary number  
-this technique has a name that is very descriptive and easy to understand, ONE HOT encoding
+column 10 to 11, each of the column represent a binary digit 0 or 1, so all 4 columns together represents a number in 4 bit binary, 0 0 0 1 is 1 <br />
+This technique has a name that is very descriptive and easy to understand, ONE HOT encoding
 ```
  10  Wilderness_Area1                    581012 non-null  int64
  11  Wilderness_Area2                    581012 non-null  int64
@@ -50,6 +50,7 @@ columns 14 to 53 is also the ONE HOT encoding columns for the Soil_Type
  15  Soil_Type2                          581012 non-null  int64
  16  Soil_Type3                          581012 non-null  int64
  17  Soil_Type4                          581012 non-null  int64
+    ...
 ```
 
 the last column, column 54, is the CORRECT ANSWER for each row (sample), the 'Type of Forest' that are covering the land, and its attribute values are in column 0 to 53
