@@ -71,17 +71,42 @@ object Home2 {
 
       println("\nclass " + asdf)
 
-      print("Printing the metrics.accuracy: ")
-      println(metrics.accuracy)
+//      print("Printing the metrics.accuracy: ")
+//      println(metrics.accuracy)
 
-      println("precision value: " + metrics.precision(asdf))
+      println("precision value: " + metrics.precision(asdf) )
     }
-
-    println("\nPrinting the SUM of OVERALL PRECISION")
-    println(sum1)
 
     println("\nPrinting the CONFUSION MATRIX")
     println(metrics.confusionMatrix)
+
+    println("\n")
+    def lalala( inputData: RDD[LabeledPoint] ): Array[Double] = {
+
+      val numOfSampleOutofTotal = inputData.map(_.label).countByValue()
+      // showing how many 'samples' each 'class (1 to 7) there are
+      numOfSampleOutofTotal.foreach(println)
+
+//      val count1 = numOfSampleOutofTotal.toArray.sortBy(_._1).map(_._2)
+      val count1 = numOfSampleOutofTotal.toArray.sortBy(asdf => asdf._1).map( asdf2 => asdf2._2)
+      count1.foreach(println)
+
+      count1.map(_.toDouble / count1.sum)
+    }
+
+    val probForsetCV = lalala(cvData)
+
+    val value1 = for (asdf <- 0 to 6) yield {
+      probForsetCV(asdf) * metrics.precision(asdf)
+    }
+
+    println("\nCALCULATED OVERALL PRECISION: " + value1.sum)
+
+    println("\nPrinting the metrics.weightedPrecision")
+    println(metrics.weightedPrecision)
+
+//    println("\nPrinting the SUM of OVERALL PRECISION")
+//    println(sum1)
 
 
     // remove data from RAM?
@@ -89,8 +114,7 @@ object Home2 {
     cvData.unpersist()
 //    testData.unpersist()
 
-    println(" ")
-    println("Main function() finished running, yay!")
+    println("\nMain function() finished running, yay!")
 
   } // def main()
 

@@ -192,17 +192,42 @@ object Home2 {
 
       println("\nclass " + asdf)
 
-      print("Printing the metrics.accuracy: ")
-      println(metrics.accuracy)
+//      print("Printing the metrics.accuracy: ")
+//      println(metrics.accuracy)
 
-      println("precision value: " + metrics.precision(asdf))
+      println("precision value: " + metrics.precision(asdf) )
     }
-
-    println("\nPrinting the SUM of OVERALL PRECISION")
-    println(sum1)
 
     println("\nPrinting the CONFUSION MATRIX")
     println(metrics.confusionMatrix)
+
+    println("\n")
+    def lalala( inputData: RDD[LabeledPoint] ): Array[Double] = {
+
+      val numOfSampleOutofTotal = inputData.map(_.label).countByValue()
+      // showing how many 'samples' each 'class (1 to 7) there are
+      numOfSampleOutofTotal.foreach(println)
+
+//      val count1 = numOfSampleOutofTotal.toArray.sortBy(_._1).map(_._2)
+      val count1 = numOfSampleOutofTotal.toArray.sortBy(asdf => asdf._1).map( asdf2 => asdf2._2)
+      count1.foreach(println)
+
+      count1.map(_.toDouble / count1.sum)
+    }
+
+    val probForsetCV = lalala(cvData)
+
+    val value1 = for (asdf <- 0 to 6) yield {
+      probForsetCV(asdf) * metrics.precision(asdf)
+    }
+
+    println("\nCALCULATED OVERALL PRECISION: " + value1.sum)
+
+    println("\nPrinting the metrics.weightedPrecision")
+    println(metrics.weightedPrecision)
+
+//    println("\nPrinting the SUM of OVERALL PRECISION")
+//    println(sum1)
 
 
     // remove data from RAM?
@@ -210,8 +235,7 @@ object Home2 {
     cvData.unpersist()
 //    testData.unpersist()
 
-    println(" ")
-    println("Main function() finished running, yay!")
+    println("\nMain function() finished running, yay!")
 
   } // def main()
 
@@ -255,18 +279,9 @@ BUT, our 'TYPE OF FOREST' ranges from 1 to 7 <br />
 - etc
 
 #### Interpretation of the answer
-So we can see below that when you feed the 'sample' to the  'decision tree' algorithm; it correctly 'predicted' the 'FOREST TYPE 1' by 68%, 0.684 * 100, Class 0 <br />
-We have no data that are 'FOREST TYPE 6', Class 5 <br />
-The algorithm poorly predicted the 'FOREST TYPE 4' Class 3, from the data (samples) with only 0.36, 36% accuracy
-
-For the OVERALL PRECISION, I SUM all the precision values together
-because metrics.accuracy gives me THE SAME decimal value of all the 'class'
-Thus I can't calculate the value P(i), I know the number of total samples for the CV data-set
-but I DO NOT KNOW the number of samples for EACH CLASS, and ***metrics.accuracy*** DOES NOT GIVE ME that VALUE that I need.
+So we can see below that when you feed the 'sample' to the  'decision tree' algorithm; you can see the output below.
  
-This is the updated version, because you posted an announcement ON THE SAME DAY AS THE DUE DATE for what you wanted for the assignment; thus I DID NOT HAVE ENOUGH TIME
-to figure out how to get the answer, and I was NOT SLACKING; I turned in the original assignment 2 DAYS BEFORE THE DUE DATE, but the INSTRUCTION WASN'T CLEAR and there aren't much documentations online
-for Scala!
+This is the updated version, because an updated announcement was posted ON THE SAME DAY AS THE DUE DATE for what you wanted for the assignment; thus I DID NOT HAVE ENOUGH TIME to figure out how to get the answer, and I was NOT SLACKING; I turned in the original assignment 2 DAYS BEFORE THE DUE DATE, but the INSTRUCTION WASN'T CLEAR and there aren't much documentations online for Scala!
 
 Please forgive me for being a little upset, because I put in a lot of effort into my work but then I won't be getting a credit for it because the instructions provided to me WASN'T CLEAR.
 
@@ -274,54 +289,65 @@ Please forgive me for being a little upset, because I put in a lot of effort int
 ```
 total data count: 581012
 
-total trainData count: 464837
+total trainData count: 464839
 
-total testData count: 58058
+total testData count: 57934
 
-total CV count: 58117
+total CV count: 58239
 
 Printing the PRECISION VALUE for each 'Class'
 
 class 0
-Printing the metrics.accuracy: 0.7022557943458885
-precision value: 0.679907534085012
+precision value: 0.6831815364074197
 
 class 1
-Printing the metrics.accuracy: 0.7022557943458885
-precision value: 0.727432419244657
+precision value: 0.7266184707568061
 
 class 2
-Printing the metrics.accuracy: 0.7022557943458885
-precision value: 0.6365765382158824
+precision value: 0.6270841805612037
 
 class 3
-Printing the metrics.accuracy: 0.7022557943458885
-precision value: 0.494949494949495
+precision value: 0.33986928104575165
 
 class 4
-Printing the metrics.accuracy: 0.7022557943458885
-precision value: 0.0
+precision value: 1.0
 
 class 5
-Printing the metrics.accuracy: 0.7022557943458885
-precision value: 0.8227848101265823
+precision value: 0.0
 
 class 6
-Printing the metrics.accuracy: 0.7022557943458885
-precision value: 0.7352697095435685
-
-Printing the SUM of OVERALL PRECISION
-4.096920506165197
+precision value: 0.6917293233082706
 
 Printing the CONFUSION MATRIX
-14412.0  6471.0   7.0     0.0   0.0  0.0   287.0  
-5612.0   22362.0  330.0   11.0  0.0  6.0   32.0   
-0.0      466.0    2990.0  63.0  0.0  8.0   0.0    
-0.0      0.0      159.0   98.0  0.0  0.0   0.0    
-0.0      898.0    38.0    1.0   0.0  0.0   0.0    
-0.0      516.0    1173.0  25.0  0.0  65.0  0.0    
-1173.0   28.0     0.0     0.0   0.0  0.0   886.0  
- 
+14327.0  6546.0   10.0    0.0    0.0  0.0  376.0  
+5518.0   22313.0  441.0   30.0   0.0  0.0  34.0   
+0.0      439.0    3084.0  88.0   0.0  0.0  0.0    
+0.0      1.0      164.0   104.0  0.0  0.0  0.0    
+0.0      920.0    31.0    0.0    6.0  0.0  0.0    
+0.0      458.0    1188.0  84.0   0.0  0.0  0.0    
+1126.0   31.0     0.0     0.0    0.0  0.0  920.0  
+
+
+(0.0,21259)
+(5.0,1730)
+(1.0,28336)
+(6.0,2077)
+(2.0,3611)
+(3.0,269)
+(4.0,957)
+21259
+28336
+3611
+269
+957
+1730
+2077
+
+CALCULATED OVERALL PRECISION: 0.6844685672310528
+
+Printing the metrics.weightedPrecision
+0.6844685672310529
+
 Main function() finished running, yay!
 
 Process finished with exit code 0
