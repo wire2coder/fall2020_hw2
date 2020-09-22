@@ -15,6 +15,7 @@ object Home2 {
     val predictionsAndLabels = data.map(example =>
       (model.predict(example.features), example.label)
     )
+
     new MulticlassMetrics(predictionsAndLabels)
 
   } // def getMetrics()
@@ -46,27 +47,47 @@ object Home2 {
     // "cache data to RAM"
     trainData.cache()
     cvData.cache()
-    testData.cache()
+//    testData.cache()
+
+    println("\ntotal data count: " + data.count())
+
+    println("\ntotal trainData count: " + trainData.count() )
+
+    println("\ntotal testData count: " + testData.count() )
+
+    println("\ntotal CV count: " + cvData.count() )
 
 
     // Build a simple default DecisionTreeModel and compute precision and recall
     //    simpleDecisionTree(trainData, cvData)
     val model = DecisionTree.trainClassifier(trainData, 7, Map[Int,Int](), "gini", 4, 100)
     val metrics = getMetrics(model, cvData)
+    var sum1 = 0.0
 
-    println("\n Printing the PRECISION VALUE for each 'Class' \n")
+    println("\nPrinting the PRECISION VALUE for each 'Class'")
+
     for ( asdf <-  0 to 6) {  // we have total of 7 'classes'
-      println("Class " + asdf + " with precision value: " + metrics.precision(asdf) )
+      sum1 += metrics.precision(asdf)
+
+      println("\nclass " + asdf)
+
+      print("Printing the metrics.accuracy: ")
+      println(metrics.accuracy)
+
+      println("precision value: " + metrics.precision(asdf))
     }
 
-    println("\n Printing the CONFUSION MATRIX \n")
+    println("\nPrinting the SUM of OVERALL PRECISION")
+    println(sum1)
+
+    println("\nPrinting the CONFUSION MATRIX")
     println(metrics.confusionMatrix)
 
 
     // remove data from RAM?
     trainData.unpersist()
     cvData.unpersist()
-    testData.unpersist()
+//    testData.unpersist()
 
     println(" ")
     println("Main function() finished running, yay!")
